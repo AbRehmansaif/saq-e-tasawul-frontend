@@ -186,7 +186,7 @@
             </button>
           </n-dropdown>
 
-          <button class="action-btn">
+          <button  @click="showFavouriteModal = true" class="action-btn">
             <svg
               class="w-6 h-6 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -207,8 +207,8 @@
 
             <span class="count">{{ favoritesCount }}</span>
           </button>
-          
-          <button class="action-btn">
+
+          <button  @click="showCartModal = true" class="action-btn">
             <svg
               class="w-6 h-6 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -261,12 +261,51 @@
       </div>
     </nav>
   </header>
+  <n-modal
+    v-model:show="showFavouriteModal"
+    class="custom-card"
+    preset="card"
+    :style="bodyStyle"
+    title="Wish List"
+    :bordered="false"
+    size="huge"
+    :segmented="segmented"
+  >
+    <template #header-extra>
+
+    </template>
+    <Favourite/>
+    <!-- <template #footer>
+      Footer
+    </template> -->
+  </n-modal>
+  <n-modal
+    v-model:show="showCartModal"
+    class="custom-card"
+    preset="card"
+    :style="bodyStyle"
+    title="Cart List"
+    :bordered="false"
+    size="huge"
+    :segmented="segmented"
+  >
+  <template #header-extra>
+
+  </template>
+  <Cart/>
+  <!-- <template #footer>
+    Footer
+  </template> -->
+  </n-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, h } from 'vue';
+
+import Cart from './Cart.vue';
+import Favourite from './Favourite.vue';
+import { defineComponent, h, ref } from 'vue';
 import type { Component } from 'vue';
-import { NIcon, NDropdown, NButton} from 'naive-ui';
+import { NIcon, NDropdown, NButton, NModal } from 'naive-ui';
 import {
   Pencil as EditIcon,
   LogOutOutline as LogoutIcon,
@@ -284,10 +323,22 @@ function renderIcon(icon: Component) {
 export default defineComponent({
   components: {
     NDropdown,
-    NButton
+    NButton,
+    NModal,
+    Favourite,
+    Cart
   },
   data() {
     return {
+      bodyStyle: {
+        width: '600px'
+      },
+      segmented: {
+        content: 'soft',
+        footer: 'soft'
+      } as const,
+      showFavouriteModal: false,
+      showCartModal: false,
       currency: 'usd',
       language: 'en-US',
       searchQuery: '',
